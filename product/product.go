@@ -81,6 +81,7 @@ func (pro *productInfo) Get() (string, error) {
 				log.Println(err)
 				return "", err
 			}
+
 			val = string(productStr)
 			rand.Seed(time.Now().Unix())
 			expiration := expire + rand.Int()
@@ -110,6 +111,12 @@ func (pro *productInfo) Set() error {
 	return pro.readAndWrite()
 }
 
+func (pro *productInfo) Del() error {
+	return nil
+}
+
+//商品详情有更新或新增，收到消息都会去db取最新的数据，更新到redis
+//如果更新失败，上游程序会将失败消息重发消息队列，重试
 func (pro *productInfo) readAndWrite() error {
 	product := &Product{Pid: pro.productId}
 	db := mysql.GetDb()
@@ -130,6 +137,7 @@ func (pro *productInfo) readAndWrite() error {
 		log.Println(err)
 		return err
 	}
+
 	val := string(productStr)
 	key := pro.redisKey
 	rand.Seed(time.Now().Unix())
