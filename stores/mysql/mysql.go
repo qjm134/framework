@@ -25,3 +25,7 @@ func Init() error {
 	}
 	return err
 }
+
+func GetDb() *xorm.Engine {
+	return db
+}
