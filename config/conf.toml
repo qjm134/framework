@@ -1,0 +1,13 @@
+[global]
+    logLevel = "info"
+    pid = "./.pid"
+
+[mysql]
+    address = "127.0.0.1:3306"
+    username = "root"
+    password = "123456"
+    database = "order"
+
+[redis]
+    address = "127.0.0.1:6379"
+    auth = "abcdefg"
