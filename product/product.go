@@ -99,9 +99,17 @@ func (pro *productInfo) readAndWrite() error {
 	if err != nil {
 		return err
 	}
+	if has == false {
+		return errors.New("not found")
+	}
 
-	if has == true {
-
+	productStr, _ := json.Marshal(product)
+	val := string(productStr)
+	key := pro.redisKey
+	expiration := time.Duration(expire) * time.Second
+	client := redis.GetClient()
+	if err = client.Set(key, val, expiration).Err(); err != nil {
+		return err
 	}
 
 	return nil
